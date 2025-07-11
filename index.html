@@ -246,6 +246,158 @@
   }
   setInterval(createSnowflake,250);
 </script>
+<!-- Уведомление о скидке -->
+<div id="discount-popup" style="display:none;">
+  <div id="discount-box">
+    <button id="discount-close">×</button>
+    <h3>🔥 Скидка 15%!</h3>
+    <p>Только в течение <strong>7 дней</strong> — закажите сайт, бота или программу и получите скидку 15%!</p>
+    <div id="discount-timer">⏳ Осталось: <span id="time-left">загрузка...</span></div>
+    <a href="https://t.me/IT_Programmer_io" target="_blank" class="discount-btn">Заказать со скидкой</a>
+    <p style="font-size: 0.9rem; color:#eee; margin-top:8px;">* Скидка рассчитывается индивидуально</p>
+  </div>
+</div>
 
+<style>
+  #discount-popup {
+    position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+    background: linear-gradient(135deg, #3b5b9b, #6fa3ff);
+    color: white; padding: 20px 24px 18px; border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    max-width: 320px; width: calc(100% - 40px);
+    animation: slideUp 0.8s ease;
+    font-family: 'Rubik', sans-serif;
+  }
+
+  #discount-box { position: relative; }
+
+  #discount-popup h3 {
+    margin: 0 0 10px;
+    font-size: 1.4rem;
+  }
+
+  #discount-popup p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .discount-btn {
+    display: inline-block;
+    margin-top: 14px;
+    background: #fff;
+    color: #3b5b9b;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(255,255,255,0.2);
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .discount-btn:hover {
+    background: #f0f4ff;
+    color: #2b467a;
+  }
+
+  #discount-close {
+    position: absolute;
+    top: -10px; right: -10px;
+    background: #fff; color: #3b5b9b;
+    border: none; border-radius: 50%;
+    width: 26px; height: 26px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(0,0,0,0.15);
+  }
+
+  #discount-timer {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #e9f2ff;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  @media (max-width: 480px) {
+    #discount-popup {
+      right: 10px;
+      bottom: 20px;
+    }
+  }
+</style>
+
+<script>
+  const popup = document.getElementById('discount-popup');
+  const closeBtn = document.getElementById('discount-close');
+  const timeLeft = document.getElementById('time-left');
+
+  const expireKey = 'discount_closed_until';
+  const startKey = 'discount_start_time';
+  const now = Date.now();
+
+  // Если пользователь впервые зашёл — сохраняем время начала
+  if (!localStorage.getItem(startKey)) {
+    localStorage.setItem(startKey, now);
+  }
+
+  const startTime = parseInt(localStorage.getItem(startKey));
+  const duration = 7 * 24 * 60 * 60 * 1000; // 7 дней
+  const expireAt = startTime + duration;
+
+  // Показываем попап
+  function showPopup() {
+    if (now < expireAt) {
+      popup.style.display = 'block';
+    } else {
+      popup.remove(); // истёк срок — убираем полностью
+    }
+  }
+
+  // Закрытие и установка метки на 3 дня
+  closeBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+    localStorage.setItem(expireKey, expireAt);
+  });
+
+  // Обновление таймера каждую секунду
+  function updateTimer() {
+    const now = Date.now();
+    const diff = expireAt - now;
+
+    if (diff <= 0) {
+      popup.remove();
+      clearInterval(timerInterval);
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    timeLeft.textContent = 
+      `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+  }
+
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  window.addEventListener('load', () => {
+    const closedUntil = localStorage.getItem(expireKey);
+    if (!closedUntil || now < parseInt(closedUntil)) {
+      showPopup();
+      setTimeout(() => {
+        showPopup();
+      }, 60000); // Показать повторно через 1 минуту
+    }
+    updateTimer();
+  });
+</script>
 </body>
 </html>
