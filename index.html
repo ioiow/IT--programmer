@@ -336,72 +336,7 @@
   }
 </style>
 
-<script>
-  const popup = document.getElementById('discount-popup');
-  const closeBtn = document.getElementById('discount-close');
-  const timeLeft = document.getElementById('time-left');
 
-  const expireKey = 'discount_closed_until';
-  const startKey = 'discount_start_time';
-  const now = Date.now();
-
-  // Если пользователь впервые зашёл — сохраняем время начала
-  if (!localStorage.getItem(startKey)) {
-    localStorage.setItem(startKey, now);
-  }
-
-  const startTime = parseInt(localStorage.getItem(startKey));
-  const duration = 7 * 24 * 60 * 60 * 1000; // 7 дней
-  const expireAt = startTime + duration;
-
-  // Показываем попап
-  function showPopup() {
-    if (now < expireAt) {
-      popup.style.display = 'block';
-    } else {
-      popup.remove(); // истёк срок — убираем полностью
-    }
-  }
-
-  // Закрытие и установка метки на 3 дня
-  closeBtn.addEventListener('click', () => {
-    popup.style.display = 'none';
-    localStorage.setItem(expireKey, expireAt);
-  });
-
-  // Обновление таймера каждую секунду
-  function updateTimer() {
-    const now = Date.now();
-    const diff = expireAt - now;
-
-    if (diff <= 0) {
-      popup.remove();
-      clearInterval(timerInterval);
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-
-    timeLeft.textContent = 
-      `${days}д ${hours}ч ${minutes}м ${seconds}с`;
-  }
-
-  const timerInterval = setInterval(updateTimer, 1000);
-
-  window.addEventListener('load', () => {
-    const closedUntil = localStorage.getItem(expireKey);
-    if (!closedUntil || now < parseInt(closedUntil)) {
-      showPopup();
-      setTimeout(() => {
-        showPopup();
-      }, 60000); // Показать повторно через 1 минуту
-    }
-    updateTimer();
-  });
-</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -469,7 +404,7 @@
     popup.style.display = 'none';
     setTimeout(() => {
       if (Date.now() < expireAt) popup.style.display = 'block';
-    }, 60000);
+    }, 10000);
   });
 
   window.addEventListener('load', initTimer);
