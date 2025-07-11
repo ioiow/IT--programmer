@@ -122,6 +122,9 @@
     .review-text{font-size:1rem;}
   }
 </style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
 </head>
 
 <body>
@@ -398,6 +401,78 @@
     }
     updateTimer();
   });
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuYgz7kQrLHoZxg283KLdI10wj5tm6t2M",
+    authDomain: "timer-dbc8f.firebaseapp.com",
+    projectId: "timer-dbc8f",
+    storageBucket: "timer-dbc8f.appspot.com",
+    messagingSenderId: "977230931877",
+    appId: "1:977230931877:web:b14a032ecf4c978b5daa4c",
+    measurementId: "G-WTF1RLDEY9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const popup = document.getElementById('discount-popup');
+  const closeBtn = document.getElementById('discount-close');
+  const timeLeft = document.getElementById('time-left');
+
+  const docRef = doc(db, 'global', 'discountStart');
+  let expireAt;
+
+  async function initTimer() {
+    const snap = await getDoc(docRef);
+    let startTime;
+
+    if (snap.exists()) {
+      startTime = snap.data().start;
+    } else {
+      startTime = Date.now();
+      await setDoc(docRef, { start: startTime });
+    }
+
+    const duration = 7 * 24 * 60 * 60 * 1000;
+    expireAt = startTime + duration;
+
+    const now = Date.now();
+    if (now < expireAt) {
+      popup.style.display = 'block';
+    }
+
+    setInterval(() => updateTimer(expireAt), 1000);
+  }
+
+  function updateTimer(expireAt) {
+    const now = Date.now();
+    const diff = expireAt - now;
+
+    if (diff <= 0) {
+      popup.remove();
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    timeLeft.textContent = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
+  }
+
+  closeBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+    setTimeout(() => {
+      if (Date.now() < expireAt) popup.style.display = 'block';
+    }, 60000);
+  });
+
+  window.addEventListener('load', initTimer);
 </script>
 </body>
 </html>
