@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Professional Website Development</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+  /* ---------- Global variables and base styles ---------- */
+  :root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #3f37c9;
+    --accent: #4895ef;
+    --dark: #1a1a2e;
+    --light: #f8f9fa;
+    --success: #4cc9f0;
+    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+    --shadow: 0 10px 30px rgba(67, 97, 238, 0.2);
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f8f9fa;
+    color: var(--dark);
+    line-height: 1.7;
+    overflow-x: hidden;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+
+  body.visible {
+    opacity: 1;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+
+  a:hover {
+    color: var(--primary-dark);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ---------- Header with parallax effect ---------- */
+  header {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+    background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.8));
+  }
+
+  .header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+    z-index: -1;
+    transform: translateZ(-1px) scale(1.2);
+  }
+
+  header h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+  }
+
+  header p {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    max-width: 800px;
+    margin: 0 auto 40px;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease-out 0.2s forwards;
+  }
+
+  .scroll-down {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1.5rem;
+    animation: bounce 2s infinite;
+    cursor: pointer;
+  }
+
+  /* ---------- Main sections ---------- */
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .section-title {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  .section-title h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--gradient);
+    margin: 15px auto;
+    border-radius: 2px;
+  }
+
+  /* ---------- About ---------- */
+  .about {
+    background-color: white;
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+
+  .about-text {
+    position: relative;
+  }
+
+  .about-text::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 100px;
+    height: 100px;
+    border-left: 3px solid var(--accent);
+    border-top: 3px solid var(--accent);
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .about-text::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    border-right: 3px solid var(--accent);
+    border-bottom: 3px solid var(--accent);
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .about-image {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transform: perspective(1000px) rotateY(-10deg);
+    transition: var(--transition);
+  }
+
+  .about-image:hover {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+
+  /* ---------- Features ---------- */
+  .features {
+    background-color: #f1f3ff;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+  }
+
+  .feature-card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--gradient);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+  }
+
+  .feature-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 20px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--dark);
+  }
+
+  /* ---------- Portfolio ---------- */
+  .portfolio {
+    background-color: white;
+  }
+
+  .portfolio-filter {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .filter-btn {
+    padding: 8px 20px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--gradient);
+    color: white;
+    border-color: transparent;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+  }
+
+  .portfolio-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+  }
+
+  .portfolio-item:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow);
+  }
+
+  .portfolio-img {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .portfolio-item:hover .portfolio-img {
+    transform: scale(1.1);
+  }
+
+  .portfolio-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(26, 26, 46, 0.9), transparent);
+    padding: 30px 20px;
+    color: white;
+    transform: translateY(100%);
+    transition: var(--transition);
+  }
+
+  .portfolio-item:hover .portfolio-overlay {
+    transform: translateY(0);
+  }
+
+  .portfolio-overlay h3 {
+    margin-bottom: 10px;
+  }
+
+  .portfolio-overlay a {
+    color: white;
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .portfolio-overlay a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: white;
+    transition: var(--transition);
+  }
+
+  .portfolio-overlay a:hover::after {
+    width: 100%;
+  }
+
+  /* ---------- Testimonials ---------- */
+  .testimonials {
+    background-color: #f1f3ff;
+  }
+
+  .testimonials-slider {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .testimonial-card {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 0 20px;
+    position: relative;
+  }
+
+  .testimonial-card::before {
+    content: '\201C';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 5rem;
+    color: rgba(67, 97, 238, 0.1);
+    font-family: serif;
+    line-height: 1;
+  }
+
+  .testimonial-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 20px;
+    border: 5px solid rgba(67, 97, 238, 0.1);
+  }
+
+  .testimonial-name {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+    color: var(--dark);
+  }
+
+  .testimonial-role {
+    color: var(--primary);
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .testimonial-text {
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .stars {
+    color: #ffc107;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .slick-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    list-style: none;
+  }
+
+  .slick-dots li {
+    margin: 0 5px;
+  }
+
+  .slick-dots button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd;
+    border: none;
+    font-size: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .slick-dots .slick-active button {
+    background: var(--primary);
+    transform: scale(1.2);
+  }
+
+  /* ---------- Social Proof ---------- */
+  .social-proof {
+    background: white;
+  }
+
+  .clients-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  .client-logo {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: var(--transition);
+    max-height: 80px;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  .client-logo:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: center;
+  }
+
+  .stat-item {
+    padding: 30px 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    transition: var(--transition);
+  }
+
+  .stat-item:hover {
+    background: var(--gradient);
+    color: white;
+    transform: translateY(-5px);
+  }
+
+  .stat-item:hover .stat-number,
+  .stat-item:hover .stat-label {
+    color: white;
+  }
+
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+    transition: var(--transition);
+  }
+
+  .stat-label {
+    font-size: 1.1rem;
+    color: var(--dark);
+    transition: var(--transition);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    background: linear-gradient(rgba(26, 26, 46, 0.9), rgba(26, 26, 46, 0.9)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat fixed;
+    color: white;
+    text-align: center;
+  }
+
+  .contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    transition: var(--transition);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  textarea.form-control {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background: var(--gradient);
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+    z-index: -1;
+    opacity: 0;
+    transition: var(--transition);
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(67, 97, 238, 0.5);
+  }
+
+  .btn:hover::before {
+    opacity: 1;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    box-shadow: none;
+  }
+
+  .btn-outline:hover {
+    background: white;
+    color: var(--primary);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    background: var(--dark);
+    color: white;
+    padding: 60px 0 30px;
+  }
+
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-column h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: white;
+  }
+
+  .footer-links {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 10px;
+  }
+
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: var(--transition);
+  }
+
+  .footer-links a:hover {
+    color: white;
+    padding-left: 5px;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    transition: var(--transition);
+  }
+
+  .social-links a:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+  }
+
+  .copyright {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+
+  /* ---------- Animations ---------- */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0) translateX(-50%);
+    }
+    40% {
+      transform: translateY(-20px) translateX(-50%);
+    }
+    60% {
+      transform: translateY(-10px) translateX(-50%);
+    }
+  }
+
+  /* ---------- Scroll effects ---------- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .in-view {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- Floating button ---------- */
+  .floating-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: var(--gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 5px 20px rgba(67, 97, 238, 0.4);
+    z-index: 999;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  .floating-btn:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 10px 25px rgba(67, 97, 238, 0.5);
+  }
+
+  /* ---------- Responsiveness ---------- */
+  @media (max-width: 992px) {
+    .about-content {
+      grid-template-columns: 1fr;
+    }
+
+    .about-image {
+      order: -1;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    section {
+      padding: 70px 0;
+    }
+
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .social-links {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    header h1 {
+      font-size: 2.5rem;
+    }
+
+    .feature-card {
+      padding: 30px 20px;
+    }
+
+    .testimonial-card {
+      padding: 30px 20px;
+    }
+
+    .contact-form {
+      padding: 30px 20px;
+    }
+
+    .floating-btn {
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+      bottom: 20px;
+      right: 20px;
+    }
+  }
+
+  /* ---------- Special effects ---------- */
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 97, 238, 0.3), transparent 70%);
+    filter: blur(30px);
+    z-index: -1;
+  }
+
+  .glow-1 {
+    top: 20%;
+    left: 10%;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .glow-2 {
+    bottom: 15%;
+    right: 10%;
+    animation: float 10s ease-in-out infinite 2s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  /* ---------- Snowflakes (for winter effect) ---------- */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    z-index: 9999;
+    user-select: none;
+    pointer-events: none;
+    color: #fff;
+    font-size: 1em;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    to {
+      transform: translateY(100vh) rotate(360deg);
+    }
+  }
+
+  /* ---------- Discount modal ---------- */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal {
+    background: white;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    padding: 30px;
+    position: relative;
+    transform: translateY(50px);
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-overlay.active .modal {
+    transform: translateY(0);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #999;
+    transition: var(--transition);
+  }
+
+  .modal-close:hover {
+    color: var(--primary);
+  }
+
+  .modal h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--primary);
+  }
+
+  .modal p {
+    margin-bottom: 20px;
+  }
+
+  .modal-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .modal-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: var(--transition);
+  }
+
+  .modal-btn-primary {
+    background: var(--gradient);
+    color: white;
+    border: none;
+  }
+
+  .modal-btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+  }
+
+  .modal-btn-outline {
+    background: transparent;
+    border: 2px solid #ddd;
+    color: var(--dark);
+  }
+
+  .modal-btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  /* ---------- Language switcher ---------- */
+  .language-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 30px;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .lang-btn {
+    padding: 5px 15px;
+    border-radius: 20px;
+    color: var(--dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+  }
+
+  .lang-btn.active {
+    background: var(--gradient);
+    color: white;
+  }
+
+  .lang-btn:not(.active):hover {
+    background: rgba(67, 97, 238, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .language-switcher {
+      top: 10px;
+      right: 10px;
+    }
+  }
+</style>
+
+<!-- Libraries -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+</head>
+
+<body>
+<!-- Language switcher -->
+<div class="language-switcher">
+  <a href="index.html" class="lang-btn">RU</a>
+  <a href="index-en.html" class="lang-btn active">EN</a>
+</div>
+
+<!-- Parallax header -->
+<header>
+  <div class="header-bg"></div>
+  <div class="container">
+    <h1>Professional Website Development</h1>
+    <p>I create high-quality, modern and responsive websites that deliver results</p>
+    <a href="#contact" class="btn">Start Project</a>
+  </div>
+  <div class="scroll-down" onclick="document.querySelector('main').scrollIntoView({behavior: 'smooth'})">
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</header>
+
+<main>
+  <!-- About -->
+  <section id="about" class="about reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>About</h2>
+        <p>It's not just a website - it's a tool for your business</p>
+      </div>
+      <div class="about-content">
+        <div class="about-text">
+          <p>I don't just create websites, but digital solutions that work for your business. Each project is an individual approach, maximum efficiency and guaranteed results.</p>
+          <p>Modern technologies, creative design and thoughtful structure - that's what distinguishes my work. I don't just layout pages, but create full-fledged digital products.</p>
+          <p>From idea to implementation - full development cycle taking into account all your wishes and requirements of the modern market.</p>
+          <a href="#portfolio" class="btn">View Works</a>
+        </div>
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" alt="Work process">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="features reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>Why Choose Me</h2>
+        <p>Professional approach to every project</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Speed</h3>
+          <p>Clear work plan and deadlines. No delays or missed deadlines.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Results</h3>
+          <p>Websites that really work and bring profit to your business.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3>Design</h3>
+          <p>Modern and user-friendly interfaces with focus on user experience.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3>Support</h3>
+          <p>Help and consultations even after project delivery. You won't be left alone with the website.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Responsiveness</h3>
+          <p>Perfect display on all devices - from smartphones to widescreen monitors.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3>Reliability</h3>
+          <p>Stable operation, protection against hacking and regular data backup.</p>
+        </div>
+      </div>
+    </div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+  </section>
+
+  <!-- Portfolio -->
+  <section id="portfolio" class="portfolio reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>My Works</h2>
+        <p>Examples of completed projects</p>
+      </div>
+      <div class="portfolio-filter">
+        <button class="filter-btn active" data-filter="all">All Works</button>
+        <button class="filter-btn" data-filter="landing">Landings</button>
+        <button class="filter-btn" data-filter="shop">Stores</button>
+        <button class="filter-btn" data-filter="corporate">Corporate</button>
+        <button class="filter-btn" data-filter="freelance">Freelance</button>
+      </div>
+      <div class="portfolio-grid">
+        <!-- Landings -->
+        <div class="portfolio-item reveal" data-category="landing">
+          <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Restaurant landing page" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Restaurant Landing Page</h3>
+            <p>Modern design with online menu and reservation system</p>
+            <a href="https://raish.ru/rec/referens/landing-restoran">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- Stores -->
+        <div class="portfolio-item reveal" data-category="shop">
+          <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="E-commerce store" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Electronics Store</h3>
+            <p>Full-featured store with catalog, filters and online payment</p>
+            <a href="https://comfy.ua/">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- Corporate -->
+        <div class="portfolio-item reveal" data-category="corporate">
+          <img src="https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Corporate website" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>IT Company Website</h3>
+            <p>Unique design and CMS based on Headless architecture</p>
+            <a href="https://dprofile.ru/case/127221/korporativnyi-sait-dlia-it-kompanii">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- Landings -->
+        <div class="portfolio-item reveal" data-category="landing">
+          <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog landing" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Personal Blog</h3>
+            <p>Minimalist design with focus on content and SEO optimization</p>
+            <a href="https://terabit.ai/research/seo-i-dizajn">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- Stores -->
+        <div class="portfolio-item reveal" data-category="shop">
+          <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Clothing store" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Clothing Store</h3>
+            <p>Stylish design with fitting room and recommendation system</p>
+            <a href="https://www.lamoda.ru">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- Corporate -->
+        <div class="portfolio-item reveal" data-category="corporate">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Corporate website" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Construction Company Website</h3>
+            <p>Services presentation, project portfolio and cost calculator</p>
+            <a href="https://yurkevich.pro/publikatsii-top-10">Details <i class="fas fa-arrow-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- New works: Freelance -->
+        <div class="portfolio-item reveal" data-category="freelance">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Freelance projects" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Freelance Projects</h3>
+            <p>Various works completed on freelance platforms</p>
+            <a href="http://t.me/FreelanceStartip_bot/Freelance">View in Telegram <i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+        
+        <div class="portfolio-item reveal" data-category="freelance">
+          <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Web development" class="portfolio-img">
+          <div class="portfolio-overlay">
+            <h3>Web Development</h3>
+            <p>Custom solutions for small businesses</p>
+            <a href="http://t.me/FreelanceStartip_bot/Freelance">Details in bot <i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section id="testimonials" class="testimonials reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>Client Testimonials</h2>
+        <p>What clients say about my work</p>
+      </div>
+      <div class="testimonials-slider">
+        <div class="testimonial-card">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Anna Petrova" class="testimonial-avatar">
+          <h4 class="testimonial-name">Anna Petrova</h4>
+          <p class="testimonial-role">Restaurant Owner</p>
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Very satisfied with the work! The restaurant website was done quickly, all wishes were taken into account. After launch, the number of reservations increased by 40%. I recommend to everyone!"</p>
+        </div>
+        <div class="testimonial-card">
+          <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Sergey Ivanov" class="testimonial-avatar">
+          <h4 class="testimonial-name">Sergey Ivanov</h4>
+          <p class="testimonial-role">IT Company Director</p>
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"The corporate website turned out exactly as we wanted. Professional approach, attention to detail. Especially liked the content management system."</p>
+        </div>
+        <div class="testimonial-card">
+          <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Marina Kozlova" class="testimonial-avatar">
+          <h4 class="testimonial-name">Marina Kozlova</h4>
+          <p class="testimonial-role">Blogger</p>
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">"The blog website was done quickly and with high quality. Convenient admin panel, beautiful design. After moving to the new website, traffic doubled. Thank you!"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section id="proof" class="social-proof reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>Recommended By</h2>
+        <p>Companies and clients who trusted me with their projects</p>
+      </div>
+      <div class="clients-grid">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png" alt="Amazon" class="client-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Apple" class="client-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png" alt="Google" class="client-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/2560px-Microsoft_logo_%282012%29.svg.png" alt="Microsoft" class="client-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/HP_logo_2012.svg/2560px-HP_logo_2012.svg.png" alt="HP" class="client-logo">
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-number">150+</div>
+          <div class="stat-label">Completed Projects</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Satisfied Clients</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years of Experience</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">24/7</div>
+          <div class="stat-label">Client Support</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact reveal">
+    <div class="container">
+      <div class="section-title">
+        <h2>Ready to Start Your Project?</h2>
+        <p>Contact me via Telegram</p>
+      </div>
+      <div class="contact-form">
+        <form id="telegramForm">
+          <div class="form-group">
+            <input type="text" id="userName" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="userContact" class="form-control" placeholder="Phone or Email" required>
+          </div>
+          <div class="form-group">
+            <textarea id="userMessage" class="form-control" placeholder="Describe your project" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-outline">
+            <i class="fab fa-telegram"></i> Send via Telegram
+          </button>
+        </form>
+        <p style="text-align: center; margin-top: 15px; font-size: 0.9em;">
+          Or write directly: <a href="https://t.me/ggyuik_bot" target="_blank">@ggyuik_bot</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="reveal">
+    <div class="container">
+      <div class="footer-content">
+        </div>
+
+        </div>
+        <div class="footer-column">
+          <h3>Contacts</h3>
+          <ul class="footer-links">
+            <li><a href="mailto:test166667@gmail.com">info@itprogrammer.pro</a></li>
+            <li><a href="tel:+7 (888) 000-88-00">+7 (888) 000-88-00</a></li>
+            <li><a href="https://t.me/IT_Programmer_io"><i class="fab fa-telegram"></i></a>
+            <li><a href="#">Moscow, Russia</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        &copy; 2011-2025 All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+</main>
+
+<!-- Floating button -->
+<a href="https://t.me/IT_Programmer_io" class="floating-btn" target="_blank">
+  <i class="fab fa-telegram"></i>
+</a>
+
+<!-- Snowflakes -->
+<div id="snowflakes-container"></div>
+
+<!-- Discount modal -->
+<div class="modal-overlay" id="discount-modal">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">&times;</button>
+    <h3>🔥 Special Offer!</h3>
+    <p>Only today - <strong>15% discount</strong> on turnkey website development. Take advantage of this offer!</p>
+    <p>Submit your application within <strong>24 hours</strong> and get a personal discount.</p>
+    <div class="modal-buttons">
+      <a href="https://t.me/IT_Programmer_io" class="modal-btn modal-btn-primary" target="_blank">Get Discount</a>
+      <button class="modal-btn modal-btn-outline" id="modal-later">Remind Later</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  // Animation of elements on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Show page after loading
+  window.addEventListener('load', () => {
+    document.body.classList.add('visible');
+    
+    // Show discount modal after 5 seconds
+    setTimeout(() => {
+      if (!localStorage.getItem('modalClosed')) {
+        document.getElementById('discount-modal').classList.add('active');
+      }
+    }, 5000);
+  });
+
+  // Close modal
+  document.getElementById('modal-close').addEventListener('click', () => {
+    document.getElementById('discount-modal').classList.remove('active');
+    localStorage.setItem('modalClosed', 'true');
+  });
+
+  document.getElementById('modal-later').addEventListener('click', () => {
+    document.getElementById('discount-modal').classList.remove('active');
+    setTimeout(() => {
+      if (!localStorage.getItem('modalClosed')) {
+        document.getElementById('discount-modal').classList.add('active');
+      }
+    }, 3600000); // After 1 hour
+  });
+
+  // Portfolio filtering
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all buttons
+      filterBtns.forEach(b => b.classList.remove('active'));
+      // Add active class to current button
+      btn.classList.add('active');
+      
+      const filter = btn.dataset.filter;
+      const portfolioItems = document.querySelectorAll('.portfolio-item');
+      
+      portfolioItems.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Testimonials slider initialization
+  $(document).ready(function(){
+    $('.testimonials-slider').slick({
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      adaptiveHeight: true,
+      autoplay: true,
+      autoplaySpeed: 5000,
+      arrows: false
+    });
+  });
+
+  // Create snowflakes
+  function createSnowflake() {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.innerHTML = '❄';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.fontSize = (8 + Math.random() * 12) + 'px';
+    snowflake.style.opacity = Math.random();
+    snowflake.style.animationDuration = (5 + Math.random() * 5) + 's';
+    document.getElementById('snowflakes-container').appendChild(snowflake);
+    
+    // Remove snowflake after animation completes
+    setTimeout(() => {
+      snowflake.remove();
+    }, 10000);
+  }
+
+  // Start creating snowflakes
+  setInterval(createSnowflake, 200);
+
+  // Parallax effect for header
+  window.addEventListener('scroll', () => {
+    const scrollPosition = window.pageYOffset;
+    const headerBg = document.querySelector('.header-bg');
+    headerBg.style.transform = `translateY(${scrollPosition * 0.5}px) translateZ(-1px) scale(1.2)`;
+  });
+
+  // Smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuYgz7kQrLHoZxg283KLdI10wj5tm6t2M",
+    authDomain: "timer-dbc8f.firebaseapp.com",
+    projectId: "timer-dbc8f",
+    storageBucket: "timer-dbc8f.appspot.com",
+    messagingSenderId: "977230931877",
+    appId: "1:977230931877:web:b14a032ecf4c978b5daa4c",
+    measurementId: "G-WTF1RLDEY9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const timeLeft = document.getElementById('time-left');
+
+  async function initTimer() {
+    const docRef = doc(db, 'global', 'discountStart');
+    const snap = await getDoc(docRef);
+    let startTime;
+
+    if (snap.exists()) {
+      startTime = snap.data().start;
+    } else {
+      startTime = Date.now();
+      await setDoc(docRef, { start: startTime });
+    }
+
+    const duration = 7 * 24 * 60 * 60 * 1000; // 7 days
+    const expireAt = startTime + duration;
+
+    const now = Date.now();
+    if (now < expireAt) {
+      document.getElementById('discount-popup').style.display = 'block';
+    }
+
+    setInterval(() => updateTimer(expireAt), 1000);
+  }
+
+  function updateTimer(expireAt) {
+    const now = Date.now();
+    const diff = expireAt - now;
+
+    if (diff <= 0) {
+      document.getElementById('discount-popup').remove();
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    timeLeft.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  window.addEventListener('load', initTimer);
+</script>
+</body>
+</html>
